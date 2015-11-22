@@ -40,7 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messaging\Outbound\IOutboundMessage.cs" />
+    <Compile Include="Messaging\Outbound\OutboundAddressableMessage.cs" />
+    <Compile Include="Messaging\Outbound\OutboundDiscoveryMessage.cs" />
+    <Compile Include="Messaging\Outbound\OutboundMessage.cs" />
+    <Compile Include="Messaging\Outbound\OutboundRediscoveryMessage.cs" />
+    <Compile Include="Messaging\Outbound\OutboundStateChangeMessage.cs" />
+    <Compile Include="Messaging\Outbound\OutboundSubscribeMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SocketState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
