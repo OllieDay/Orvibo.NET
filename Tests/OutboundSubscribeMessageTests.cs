@@ -5,7 +5,7 @@ using Orvibo.Messaging.Outbound;
 namespace Tests
 {
     [TestClass]
-    public sealed class OutbounbSubscribeMessageTests
+    public sealed class OutboundSubscribeMessageTests
     {
         [TestMethod]
         public void GetPayload_ShouldBeValid()

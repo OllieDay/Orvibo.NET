@@ -54,7 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="OutbounbSubscribeMessageTests.cs" />
+    <Compile Include="OutboundSubscribeMessageTests.cs" />
     <Compile Include="OutboundDiscoveryMessageTests.cs" />
     <Compile Include="OutboundMessageTests.cs" />
     <Compile Include="OutboundRediscoveryMessageTests.cs" />
