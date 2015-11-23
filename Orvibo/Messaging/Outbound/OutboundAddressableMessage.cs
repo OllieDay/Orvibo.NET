@@ -17,17 +17,17 @@ namespace Orvibo.Messaging.Outbound
         }
 
         /// <summary>
-        ///     Padding preceding MAC address.
+        ///     Gets the padding preceding MAC address.
         /// </summary>
         protected static byte[] Padding { get; } = { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };
 
         /// <summary>
-        ///     Command for the message type.
+        ///     Gets the command for the message type.
         /// </summary>
         protected override byte[] Command { get; } = new byte[0];
 
         /// <summary>
-        ///     Socket MAC address.
+        ///     Gets the socket MAC address.
         /// </summary>
         protected PhysicalAddress MacAddress { get; }
 

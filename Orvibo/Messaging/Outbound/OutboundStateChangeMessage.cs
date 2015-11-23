@@ -34,7 +34,7 @@ namespace Orvibo.Messaging.Outbound
         }
 
         /// <summary>
-        ///     Command for the message type.
+        ///     Gets the command for the message type.
         /// </summary>
         protected override byte[] Command { get; } = { 0x64, 0x63 };
 

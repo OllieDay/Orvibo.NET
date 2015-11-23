@@ -6,7 +6,7 @@
     internal sealed class OutboundDiscoveryMessage : OutboundMessage
     {
         /// <summary>
-        ///     Command for the message type.
+        ///     Gets the command for the message type.
         /// </summary>
         protected override byte[] Command { get; } = { 0x71, 0x61 };
     }

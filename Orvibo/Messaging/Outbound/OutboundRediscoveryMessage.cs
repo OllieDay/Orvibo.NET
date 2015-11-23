@@ -15,7 +15,7 @@ namespace Orvibo.Messaging.Outbound
         public OutboundRediscoveryMessage(PhysicalAddress macAddress) : base(macAddress) {}
 
         /// <summary>
-        ///     Command for the message type.
+        ///     Gets the command for the message type.
         /// </summary>
         protected override byte[] Command { get; } = { 0x71, 0x67 };
     }

@@ -14,7 +14,7 @@ namespace Orvibo.Messaging.Outbound
         private static readonly byte[] Key = { 0x68, 0x64 };
 
         /// <summary>
-        ///     Command for the message type.
+        ///     Gets the command for the message type.
         /// </summary>
         protected abstract byte[] Command { get; }
 
