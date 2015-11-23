@@ -4,7 +4,7 @@ using System.Linq;
 namespace Orvibo.Messaging.Outbound
 {
     /// <summary>
-    ///     Provides a base implementation of an Orvibo message.
+    ///     Provides the base implementation of an outbound Orvibo message.
     /// </summary>
     internal abstract class OutboundMessage : IOutboundMessage
     {
