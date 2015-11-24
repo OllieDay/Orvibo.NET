@@ -55,6 +55,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="InboundMessageTests.cs" />
+    <Compile Include="MessageParserTests.cs" />
     <Compile Include="OutboundSubscribeMessageTests.cs" />
     <Compile Include="OutboundDiscoveryMessageTests.cs" />
     <Compile Include="OutboundMessageTests.cs" />
