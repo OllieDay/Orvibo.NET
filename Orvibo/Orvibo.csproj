@@ -50,6 +50,8 @@
     <Compile Include="Messaging\Inbound\InboundSubscribeMessage.cs" />
     <Compile Include="Messaging\Inbound\MessageParser.cs" />
     <Compile Include="Messaging\MessageException.cs" />
+    <Compile Include="Messaging\Outbound\BroadcastMessageSender.cs" />
+    <Compile Include="Messaging\Outbound\IBroadcastMessageSender.cs" />
     <Compile Include="Messaging\Outbound\IMessageSender.cs" />
     <Compile Include="Messaging\Outbound\IOutboundMessage.cs" />
     <Compile Include="Messaging\Outbound\MessageSender.cs" />
