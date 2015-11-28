@@ -1,7 +1,7 @@
 ﻿namespace Orvibo.Messaging.Outbound
 {
     /// <summary>
-    ///     Provides functionality for sending outgoing Orvibo messages to a single device.
+    ///     Provides functionality for sending outbound Orvibo messages to a single device.
     /// </summary>
     internal sealed class UnicastMessageSender : IUnicastMessageSender
     {

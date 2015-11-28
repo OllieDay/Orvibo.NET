@@ -5,7 +5,7 @@ using System.Net.Sockets;
 namespace Orvibo.Messaging.Outbound
 {
     /// <summary>
-    ///     Provides functionality for sending outgoing Orvibo messages.
+    ///     Provides functionality for sending outbound Orvibo messages.
     /// </summary>
     internal sealed class MessageSender : IMessageSender, IDisposable
     {

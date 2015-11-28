@@ -3,7 +3,7 @@
 namespace Orvibo.Messaging.Outbound
 {
     /// <summary>
-    ///     Provides functionality for sending outgoing Orvibo messages.
+    ///     Provides functionality for sending outbound Orvibo messages.
     /// </summary>
     internal interface IMessageSender
     {
