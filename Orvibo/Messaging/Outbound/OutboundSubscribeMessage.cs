@@ -22,10 +22,10 @@ namespace Orvibo.Messaging.Outbound
         /// <summary>
         ///     Gets the data for the message type.
         /// </summary>
-        /// <returns>Data for the messae type.</returns>
+        /// <returns>Data for the message type.</returns>
         protected override byte[] GetData()
         {
-            return Combine(base.GetData(), Padding, GetLittleEndianMacAddressBytes());
+            return Combine(base.GetData(), GetLittleEndianMacAddressBytes(), Padding);
         }
 
         /// <summary>

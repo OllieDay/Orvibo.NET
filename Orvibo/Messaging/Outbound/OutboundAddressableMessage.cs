@@ -17,7 +17,7 @@ namespace Orvibo.Messaging.Outbound
         }
 
         /// <summary>
-        ///     Gets the padding preceding MAC address.
+        ///     Gets the padding appended to MAC address.
         /// </summary>
         protected static byte[] Padding { get; } = { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };
 
@@ -37,7 +37,7 @@ namespace Orvibo.Messaging.Outbound
         /// <returns>Data for the messae type.</returns>
         protected override byte[] GetData()
         {
-            return Combine(base.GetData(), Padding, GetMacAddressBytes());
+            return Combine(base.GetData(), GetMacAddressBytes(), Padding);
         }
 
         /// <summary>
