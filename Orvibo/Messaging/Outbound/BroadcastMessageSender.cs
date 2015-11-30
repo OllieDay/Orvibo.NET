@@ -23,6 +23,14 @@ namespace Orvibo.Messaging.Outbound
         }
 
         /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            _messageSender.Dispose();
+        }
+
+        /// <summary>
         ///     Broadcasts a discovery message to the network.
         /// </summary>
         public void SendDiscoveryMessage()

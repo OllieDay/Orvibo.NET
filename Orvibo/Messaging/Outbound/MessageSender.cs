@@ -7,7 +7,7 @@ namespace Orvibo.Messaging.Outbound
     /// <summary>
     ///     Provides functionality for sending outbound Orvibo messages.
     /// </summary>
-    internal sealed class MessageSender : IMessageSender, IDisposable
+    internal sealed class MessageSender : IMessageSender
     {
         /// <summary>
         ///     Orvibo socket port.

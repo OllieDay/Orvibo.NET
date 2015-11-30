@@ -1,11 +1,12 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 namespace Orvibo.Messaging.Outbound
 {
     /// <summary>
     ///     Provides functionality for sending outbound Orvibo messages.
     /// </summary>
-    internal interface IMessageSender
+    internal interface IMessageSender : IDisposable
     {
         /// <summary>
         ///     Sends the specified message to the specified destination.

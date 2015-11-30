@@ -20,6 +20,14 @@
         }
 
         /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            _messageSender.Dispose();
+        }
+
+        /// <summary>
         ///     Sends an off message to the specified destination.
         /// </summary>
         /// <param name="destination">Device to send the message to.</param>

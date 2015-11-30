@@ -1,9 +1,11 @@
-﻿namespace Orvibo.Messaging.Outbound
+﻿using System;
+
+namespace Orvibo.Messaging.Outbound
 {
     /// <summary>
     ///     Provides functionality for sending outbound Orvibo messages to a single device.
     /// </summary>
-    internal interface IUnicastMessageSender
+    internal interface IUnicastMessageSender : IDisposable
     {
         /// <summary>
         ///     Sends an off message to the specified destination.

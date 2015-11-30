@@ -1,11 +1,12 @@
-﻿using System.Net.NetworkInformation;
+﻿using System;
+using System.Net.NetworkInformation;
 
 namespace Orvibo.Messaging.Outbound
 {
     /// <summary>
     ///     Provides functionality for broadcasting outbound Orvibo messages.
     /// </summary>
-    internal interface IBroadcastMessageSender
+    internal interface IBroadcastMessageSender : IDisposable
     {
         /// <summary>
         ///     Broadcasts a discovery message to the network.
