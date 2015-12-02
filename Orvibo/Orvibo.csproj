@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="INetworkDevice.cs" />
+    <Compile Include="ISocket.cs" />
     <Compile Include="Messaging\Inbound\IInboundMessage.cs" />
     <Compile Include="Messaging\Inbound\IMessageParser.cs" />
     <Compile Include="Messaging\Inbound\InboundDiscoveryMessage.cs" />
