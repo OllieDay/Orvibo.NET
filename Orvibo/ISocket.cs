@@ -4,7 +4,7 @@ using System.Net.NetworkInformation;
 
 namespace Orvibo
 {
-    public interface ISocket
+    public interface ISocket : IDisposable
     {
         event EventHandler<EventArgs> StateChanged;
 
