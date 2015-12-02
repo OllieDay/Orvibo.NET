@@ -21,12 +21,6 @@ namespace Tests
                 0x1E,
                 0x63,
                 0x6C,
-                0x20,
-                0x20,
-                0x20,
-                0x20,
-                0x20,
-                0x20,
                 0,
                 0,
                 0,
@@ -44,7 +38,13 @@ namespace Tests
                 0,
                 0,
                 0,
-                0
+                0,
+                0x20,
+                0x20,
+                0x20,
+                0x20,
+                0x20,
+                0x20
             };
             var actual = message.GetPayload();
 

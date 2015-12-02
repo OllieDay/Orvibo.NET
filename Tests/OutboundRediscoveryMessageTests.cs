@@ -13,7 +13,7 @@ namespace Tests
             var macAddress = new PhysicalAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
             var message = new OutboundRediscoveryMessage(macAddress);
 
-            var expected = new byte[] { 0x68, 0x64, 0x00, 0x12, 0x71, 0x67, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0, 0, 0, 0, 0, 0 };
+            var expected = new byte[] { 0x68, 0x64, 0x00, 0x12, 0x71, 0x67, 0, 0, 0, 0, 0, 0, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };
             var actual = message.GetPayload();
 
             CollectionAssert.AreEqual(expected, actual);
