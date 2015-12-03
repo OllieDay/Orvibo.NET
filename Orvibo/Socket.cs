@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
+using Orvibo.Messaging.Inbound;
 using Orvibo.Messaging.Outbound;
 
 namespace Orvibo
@@ -9,6 +10,8 @@ namespace Orvibo
     internal sealed class Socket : ISocket, INetworkDevice
     {
         private readonly IUnicastMessageSender _messageSender;
+
+        private bool _isSubscribed;
 
         public Socket(PhysicalAddress macAddress, IPAddress ipAddress, IUnicastMessageSender messageSender)
         {
@@ -25,7 +28,30 @@ namespace Orvibo
 
         public IPAddress IPAddress { get; }
 
-        public bool IsSubscribed { get; private set; }
+        public bool IsSubscribed
+        {
+            get
+            {
+                return _isSubscribed;
+            }
+
+            private set
+            {
+                if (IsSubscribed != value)
+                {
+                    _isSubscribed = value;
+
+                    if (IsSubscribed)
+                    {
+                        OnSubscribed(EventArgs.Empty);
+                    }
+                    else
+                    {
+                        OnUnsubscribed(EventArgs.Empty);
+                    }
+                }
+            }
+        }
 
         public PhysicalAddress MacAddress { get; }
 
@@ -41,12 +67,18 @@ namespace Orvibo
 
         public void Off()
         {
-            _messageSender.SendOffMessage(this);
+            ChangeState(SocketState.Off);
         }
 
         public void On()
         {
-            _messageSender.SendOnMessage(this);
+            ChangeState(SocketState.On);
+        }
+
+        public void Process(InboundSubscribeMessage message)
+        {
+            IsSubscribed = true;
+            Process((IInboundMessage) message);
         }
 
         public void Subscribe()
@@ -67,7 +99,28 @@ namespace Orvibo
             }
 
             IsSubscribed = false;
-            OnUnsubscribed(EventArgs.Empty);
+        }
+
+        private void ChangeState(SocketState state)
+        {
+            if (!IsSubscribed)
+            {
+                throw new InvalidOperationException("Not subscribed.");
+            }
+
+            if (State == state)
+            {
+                throw new InvalidOperationException($"State already {state}.");
+            }
+
+            if (state == SocketState.Off)
+            {
+                _messageSender.SendOffMessage(this);
+            }
+            else if (state == SocketState.On)
+            {
+                _messageSender.SendOnMessage(this);
+            }
         }
 
         private void OnStateChanged(EventArgs e)
@@ -83,6 +136,11 @@ namespace Orvibo
         private void OnUnsubscribed(EventArgs e)
         {
             Volatile.Read(ref Unsubscribed)?.Invoke(this, e);
+        }
+
+        private void Process(IInboundMessage message)
+        {
+            State = message.State;
         }
     }
 }
