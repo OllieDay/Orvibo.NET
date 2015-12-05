@@ -13,11 +13,27 @@ namespace Tests
     public sealed class SocketTests
     {
         [TestMethod]
+        public void CreateNewSocket_IPAddress_ShouldBeValid()
+        {
+            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+
+            Assert.AreEqual(socket.IPAddress, IPAddress.None);
+        }
+
+        [TestMethod]
         public void CreateNewSocket_IsSubscribed_ShouldBeFalse()
         {
             var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
 
             Assert.IsFalse(socket.IsSubscribed);
+        }
+
+        [TestMethod]
+        public void CreateNewSocket_MacAddress_ShouldBeValid()
+        {
+            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+
+            Assert.AreEqual(socket.MacAddress, PhysicalAddress.None);
         }
 
         [TestMethod]
@@ -101,6 +117,23 @@ namespace Tests
         }
 
         [TestMethod]
+        public void ProcessSubscribeMessageAlreadySubscribed_Subscribed_ShouldNotBeRaised()
+        {
+            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            var message = new InboundSubscribeMessage(data);
+
+            socket.Process(message);
+
+            var invoked = false;
+            socket.Subscribed += (sender, e) => invoked = true;
+
+            socket.Process(message);
+
+            Assert.IsFalse(invoked);
+        }
+
+        [TestMethod]
         public void StateChanged_State_ShouldChange()
         {
             var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
@@ -110,6 +143,26 @@ namespace Tests
             socket.Process(message);
 
             Assert.AreEqual(socket.State, SocketState.Off);
+        }
+
+        [TestMethod]
+        public void StateChanged_StateChanged_ShouldBeRaised()
+        {
+            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+            var subscribeMessage =
+                new InboundSubscribeMessage(new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            var onMessage =
+                new InboundStateChangeMessage(
+                    new byte[] { 0x68, 0x64, 0x00, 0x17, 0x73, 0x66, 0xAC, 0xCF, 0, 0, 0, 0, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0, 0, 0, 0, 0x01 });
+
+            socket.Process(subscribeMessage);
+
+            var invoked = false;
+            socket.StateChanged += (sender, e) => invoked = true;
+
+            socket.Process(onMessage);
+
+            Assert.IsTrue(invoked);
         }
 
         [TestMethod]

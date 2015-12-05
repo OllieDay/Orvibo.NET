@@ -100,6 +100,11 @@ namespace Orvibo
             Process((IInboundMessage) message);
         }
 
+        public void Process(InboundStateChangeMessage message)
+        {
+            Process((IInboundMessage) message);
+        }
+
         public void Subscribe()
         {
             if (IsSubscribed)
