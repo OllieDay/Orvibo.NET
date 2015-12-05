@@ -13,6 +13,8 @@ namespace Orvibo
 
         private bool _isSubscribed;
 
+        private SocketState _state = SocketState.Unknown;
+
         public Socket(PhysicalAddress macAddress, IPAddress ipAddress, IUnicastMessageSender messageSender)
         {
             MacAddress = macAddress;
@@ -20,7 +22,7 @@ namespace Orvibo
             _messageSender = messageSender;
         }
 
-        public event EventHandler<EventArgs> StateChanged;
+        public event EventHandler<SocketStateChangedEventArgs> StateChanged;
 
         public event EventHandler<EventArgs> Subscribed;
 
@@ -55,7 +57,24 @@ namespace Orvibo
 
         public PhysicalAddress MacAddress { get; }
 
-        public SocketState State { get; private set; } = SocketState.Unknown;
+        public SocketState State
+        {
+            get
+            {
+                return _state;
+            }
+
+            private set
+            {
+                if (State != value)
+                {
+                    var fromState = State;
+                    _state = value;
+
+                    OnStateChanged(new SocketStateChangedEventArgs(fromState, value));
+                }
+            }
+        }
 
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -123,7 +142,7 @@ namespace Orvibo
             }
         }
 
-        private void OnStateChanged(EventArgs e)
+        private void OnStateChanged(SocketStateChangedEventArgs e)
         {
             Volatile.Read(ref StateChanged)?.Invoke(this, e);
         }

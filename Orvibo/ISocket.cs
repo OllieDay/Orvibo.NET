@@ -12,7 +12,7 @@ namespace Orvibo
         /// <summary>
         ///     Raised when the state changes.
         /// </summary>
-        event EventHandler<EventArgs> StateChanged;
+        event EventHandler<SocketStateChangedEventArgs> StateChanged;
 
         /// <summary>
         ///     Raised when the socket is subscribed.

@@ -68,6 +68,7 @@
     <Compile Include="OrviboException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Socket.cs" />
+    <Compile Include="SocketStateChangedEventArgs.cs" />
     <Compile Include="SocketState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
