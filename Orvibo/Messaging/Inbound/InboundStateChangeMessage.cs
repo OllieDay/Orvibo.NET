@@ -14,6 +14,6 @@
         /// <summary>
         ///     Gets the message length.
         /// </summary>
-        protected override ushort Length { get; } = 24;
+        protected override ushort Length { get; } = 23;
     }
 }
