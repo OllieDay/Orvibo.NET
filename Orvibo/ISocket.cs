@@ -25,7 +25,7 @@ namespace Orvibo
         event EventHandler<EventArgs> Unsubscribed;
 
         /// <summary>
-        ///     IP address.
+        ///     Gets the IP address.
         /// </summary>
         IPAddress IPAddress { get; }
 
@@ -35,12 +35,12 @@ namespace Orvibo
         bool IsSubscribed { get; }
 
         /// <summary>
-        ///     MAC address.
+        ///     Gets the MAC address.
         /// </summary>
         PhysicalAddress MacAddress { get; }
 
         /// <summary>
-        ///     Socket state.
+        ///     Gets the socket state.
         /// </summary>
         SocketState State { get; }
 

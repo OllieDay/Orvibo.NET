@@ -9,12 +9,12 @@ namespace Orvibo
     internal interface INetworkDevice
     {
         /// <summary>
-        ///     IP address.
+        ///     Gets the IP address.
         /// </summary>
         IPAddress IPAddress { get; }
 
         /// <summary>
-        ///     MAC address.
+        ///     Gets the MAC address.
         /// </summary>
         PhysicalAddress MacAddress { get; }
     }
