@@ -45,11 +45,14 @@
     <Compile Include="ISocket.cs" />
     <Compile Include="Messaging\Inbound\IInboundMessage.cs" />
     <Compile Include="Messaging\Inbound\IMessageParser.cs" />
+    <Compile Include="Messaging\Inbound\IMessageReceiver.cs" />
     <Compile Include="Messaging\Inbound\InboundDiscoveryMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundRediscoveryMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundStateChangeMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundSubscribeMessage.cs" />
+    <Compile Include="Messaging\Inbound\MessageReceivedEventArgs.cs" />
+    <Compile Include="Messaging\Inbound\MessageReceiver.cs" />
     <Compile Include="Messaging\Inbound\MessageParser.cs" />
     <Compile Include="Messaging\MessageException.cs" />
     <Compile Include="Messaging\Outbound\BroadcastMessageSender.cs" />
