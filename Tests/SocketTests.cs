@@ -204,6 +204,19 @@ namespace Tests
         }
 
         [TestMethod]
+        public void Subscribe_Subscribing_ShouldBeRaised()
+        {
+            var unicastMessageSender = Mock.Of<IUnicastMessageSender>();
+            var socket = new Socket(PhysicalAddress.None, IPAddress.None, unicastMessageSender);
+            var invoked = false;
+
+            socket.Subscribing += (sender, e) => invoked = true;
+            socket.Subscribe();
+
+            Assert.IsTrue(invoked);
+        }
+
+        [TestMethod]
         public void Unsubscribe_IsSubscribed_ShouldBeFalse()
         {
             var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
@@ -237,6 +250,24 @@ namespace Tests
             var invoked = false;
 
             socket.Unsubscribed += (sender, e) => invoked = true;
+            socket.Unsubscribe();
+
+            Assert.IsTrue(invoked);
+        }
+
+        [TestMethod]
+        public void Unsubscribe_Unsubscribing_ShouldBeRaised()
+        {
+            var unicastMessageSender = Mock.Of<IUnicastMessageSender>();
+            var socket = new Socket(PhysicalAddress.None, IPAddress.None, unicastMessageSender);
+            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+            var message = new InboundSubscribeMessage(data);
+
+            socket.Process(message);
+
+            var invoked = false;
+
+            socket.Unsubscribing += (sender, e) => invoked = true;
             socket.Unsubscribe();
 
             Assert.IsTrue(invoked);

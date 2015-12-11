@@ -17,12 +17,12 @@ namespace Orvibo
         /// <summary>
         ///     Raised when the socket is subscribed.
         /// </summary>
-        event EventHandler<EventArgs> Subscribed;
+        event EventHandler Subscribed;
 
         /// <summary>
         ///     Raised when the socket is unsubscribed.
         /// </summary>
-        event EventHandler<EventArgs> Unsubscribed;
+        event EventHandler Unsubscribed;
 
         /// <summary>
         ///     Gets the IP address.

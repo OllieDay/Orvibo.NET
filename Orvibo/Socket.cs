@@ -48,12 +48,22 @@ namespace Orvibo
         /// <summary>
         ///     Raised when the socket is subscribed.
         /// </summary>
-        public event EventHandler<EventArgs> Subscribed;
+        public event EventHandler Subscribed;
 
         /// <summary>
         ///     Raised when the socket is unsubscribed.
         /// </summary>
-        public event EventHandler<EventArgs> Unsubscribed;
+        public event EventHandler Unsubscribed;
+
+        /// <summary>
+        ///     Raised when subscribing.
+        /// </summary>
+        internal event EventHandler Subscribing;
+
+        /// <summary>
+        ///     Raised when unsubscribing.
+        /// </summary>
+        internal event EventHandler Unsubscribing;
 
         /// <summary>
         ///     Gets the IP address.
@@ -78,11 +88,11 @@ namespace Orvibo
 
                     if (IsSubscribed)
                     {
-                        OnSubscribed(EventArgs.Empty);
+                        OnSubscribed();
                     }
                     else
                     {
-                        OnUnsubscribed(EventArgs.Empty);
+                        OnUnsubscribed();
                     }
                 }
             }
@@ -140,22 +150,19 @@ namespace Orvibo
         }
 
         /// <summary>
-        ///     Processes the inbound subscribe message.
+        ///     Processes the inbound message.
         /// </summary>
         /// <param name="message">Message to process.</param>
-        public void Process(InboundSubscribeMessage message)
+        public void Process(IInboundMessage message)
         {
-            IsSubscribed = true;
-            Process((IInboundMessage) message);
-        }
+            var subscribeMessage = message as InboundSubscribeMessage;
 
-        /// <summary>
-        ///     Processes the inbound state change message.
-        /// </summary>
-        /// <param name="message">Message to process.</param>
-        public void Process(InboundStateChangeMessage message)
-        {
-            Process((IInboundMessage) message);
+            if (subscribeMessage != null)
+            {
+                Process(subscribeMessage);
+            }
+
+            State = message.State;
         }
 
         /// <summary>
@@ -168,6 +175,7 @@ namespace Orvibo
                 throw new InvalidOperationException("Already subscribed.");
             }
 
+            OnSubscribing();
             _messageSender.SendSubscribeMessage(this);
         }
 
@@ -178,9 +186,10 @@ namespace Orvibo
         {
             if (!IsSubscribed)
             {
-                throw new InvalidOperationException("Not subscribed");
+                throw new InvalidOperationException("Not subscribed.");
             }
 
+            OnUnsubscribing();
             IsSubscribed = false;
         }
 
@@ -197,14 +206,14 @@ namespace Orvibo
 
             if (State == state)
             {
-                throw new InvalidOperationException($"State already {state}.");
+                throw new InvalidOperationException($"Already {state}.");
             }
 
             if (state == SocketState.Off)
             {
                 _messageSender.SendOffMessage(this);
             }
-            else if (state == SocketState.On)
+            else
             {
                 _messageSender.SendOnMessage(this);
             }
@@ -222,28 +231,42 @@ namespace Orvibo
         /// <summary>
         ///     Raises the Subscribed event.
         /// </summary>
-        /// <param name="e">Event args.</param>
-        private void OnSubscribed(EventArgs e)
+        private void OnSubscribed()
         {
-            Volatile.Read(ref Subscribed)?.Invoke(this, e);
+            Volatile.Read(ref Subscribed)?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        ///     Invokes the Subscribing event.
+        /// </summary>
+        private void OnSubscribing()
+        {
+            Volatile.Read(ref Subscribing)?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
         ///     Raises the Unsubscribed event.
         /// </summary>
-        /// <param name="e">Event args.</param>
-        private void OnUnsubscribed(EventArgs e)
+        private void OnUnsubscribed()
         {
-            Volatile.Read(ref Unsubscribed)?.Invoke(this, e);
+            Volatile.Read(ref Unsubscribed)?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
-        ///     Processes the inbound message.
+        ///     Invokes the Unsubscribing event.
+        /// </summary>
+        private void OnUnsubscribing()
+        {
+            Volatile.Read(ref Unsubscribing)?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        ///     Processes the inbound subscribe message.
         /// </summary>
         /// <param name="message">Message to process.</param>
-        private void Process(IInboundMessage message)
+        private void Process(InboundSubscribeMessage message)
         {
-            State = message.State;
+            IsSubscribed = true;
         }
     }
 }
