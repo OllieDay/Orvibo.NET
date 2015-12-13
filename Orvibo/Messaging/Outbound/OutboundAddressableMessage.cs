@@ -29,7 +29,7 @@ namespace Orvibo.Messaging.Outbound
         /// <summary>
         ///     Gets the socket MAC address.
         /// </summary>
-        protected PhysicalAddress MacAddress { get; }
+        private PhysicalAddress MacAddress { get; }
 
         /// <summary>
         ///     Gets the data for the message type.
