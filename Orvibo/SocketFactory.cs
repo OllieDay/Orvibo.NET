@@ -29,6 +29,14 @@ namespace Orvibo
         private static readonly List<Socket> Sockets = new List<Socket>();
 
         /// <summary>
+        ///     Configures the class.
+        /// </summary>
+        static SocketFactory()
+        {
+            MessageReceiver.MessageReceived += MessageReceived;
+        }
+
+        /// <summary>
         ///     Creates a new socket with the specified MAC address and IP address.
         /// </summary>
         /// <param name="macAddress">MAC address.</param>
