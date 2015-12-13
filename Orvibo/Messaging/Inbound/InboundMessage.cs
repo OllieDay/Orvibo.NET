@@ -16,6 +16,11 @@ namespace Orvibo.Messaging.Inbound
         private const int MacAddressLength = 6;
 
         /// <summary>
+        ///     Minimum message length.
+        /// </summary>
+        private const int MinMessageLength = 6;
+
+        /// <summary>
         ///     First 2 bytes of an Orvibo device MAC address.
         /// </summary>
         private static readonly byte[] DeviceIdentifier = { 0xAC, 0xCF };
@@ -61,13 +66,12 @@ namespace Orvibo.Messaging.Inbound
             try
             {
                 var index = _data.IndexOfSequence(DeviceIdentifier).First();
+                var bytes = _data.Skip(index).Take(MacAddressLength).ToArray();
 
-                if (index + MacAddressLength > Length)
+                if (bytes.Length != MacAddressLength)
                 {
                     throw new InvalidOperationException();
                 }
-
-                var bytes = _data.Skip(index).Take(MacAddressLength).ToArray();
 
                 MacAddress = new PhysicalAddress(bytes);
             }
@@ -98,13 +102,13 @@ namespace Orvibo.Messaging.Inbound
         }
 
         /// <summary>
-        ///     Validates the message data, ensuring its length matches the expected length for the message type.
+        ///     Validates the message data, ensuring its length is at least the minimum message length.
         /// </summary>
         private void Validate()
         {
-            if (_data.Length < Length)
+            if (_data.Length < MinMessageLength)
             {
-                throw new MessageException($"Error parsing message: expected length {Length}, actual length {_data.Length}.");
+                throw new MessageException($"Error parsing message: expected length {MinMessageLength}+, actual length {_data.Length}.");
             }
         }
     }
