@@ -7,7 +7,7 @@ namespace Orvibo.Messaging
     ///     Represents error that occur during message sending and receiving.
     /// </summary>
     [Serializable]
-    public class MessageException : OrviboException
+    public sealed class MessageException : OrviboException
     {
         /// <summary>
         ///     Initializes a new instance of the MessageException class.

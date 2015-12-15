@@ -8,7 +8,7 @@ namespace Orvibo.Messaging.Inbound
     /// <summary>
     ///     Provides the base implementation of an inbound Orvibo message.
     /// </summary>
-    public abstract class InboundMessage : IInboundMessage
+    internal abstract class InboundMessage : IInboundMessage
     {
         /// <summary>
         ///     Length of MAC address bytes.

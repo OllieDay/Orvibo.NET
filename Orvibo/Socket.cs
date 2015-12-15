@@ -159,7 +159,7 @@ namespace Orvibo
 
             if (subscribeMessage != null)
             {
-                Process(subscribeMessage);
+                IsSubscribed = true;
             }
 
             State = message.State;
@@ -258,15 +258,6 @@ namespace Orvibo
         private void OnUnsubscribing()
         {
             Volatile.Read(ref Unsubscribing)?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        ///     Processes the inbound subscribe message.
-        /// </summary>
-        /// <param name="message">Message to process.</param>
-        private void Process(InboundSubscribeMessage message)
-        {
-            IsSubscribed = true;
         }
     }
 }
