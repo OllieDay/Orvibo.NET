@@ -68,6 +68,11 @@ namespace Orvibo.Messaging.Inbound
                 return new InboundStateChangeMessage(data);
             }
 
+            if (upper == 0x68 && lower == 0x62)
+            {
+                return new InboundKeepaliveMessage(data);
+            }
+
             throw new MessageException("Error parsing message: unknown command.");
         }
 

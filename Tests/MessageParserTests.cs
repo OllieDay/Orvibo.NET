@@ -27,6 +27,15 @@ namespace Tests
         }
 
         [TestMethod]
+        public void Parse_InboundKeepaliveMessageData_ShouldReturnInboundKeepaliveMessage()
+        {
+            var data = CreateMessageData(23, 0x68, 0x62);
+            var message = Parser.Parse(data);
+
+            Assert.IsInstanceOfType(message, typeof (InboundKeepaliveMessage));
+        }
+
+        [TestMethod]
         public void Parse_InboundRediscoveryMessageData_ShouldReturnInboundRediscoveryMessage()
         {
             var data = CreateMessageData(42, 0x71, 0x68);

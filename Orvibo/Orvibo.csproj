@@ -47,6 +47,7 @@
     <Compile Include="Messaging\Inbound\IMessageParser.cs" />
     <Compile Include="Messaging\Inbound\IMessageReceiver.cs" />
     <Compile Include="Messaging\Inbound\InboundDiscoveryMessage.cs" />
+    <Compile Include="Messaging\Inbound\InboundKeepaliveMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundRediscoveryMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundStateChangeMessage.cs" />
