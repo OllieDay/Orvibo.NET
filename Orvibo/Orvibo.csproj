@@ -63,6 +63,7 @@
     <Compile Include="Messaging\Outbound\MessageSender.cs" />
     <Compile Include="Messaging\Outbound\OutboundAddressableMessage.cs" />
     <Compile Include="Messaging\Outbound\OutboundDiscoveryMessage.cs" />
+    <Compile Include="Messaging\Outbound\OutboundKeepaliveMessage.cs" />
     <Compile Include="Messaging\Outbound\OutboundMessage.cs" />
     <Compile Include="Messaging\Outbound\OutboundRediscoveryMessage.cs" />
     <Compile Include="Messaging\Outbound\OutboundStateChangeMessage.cs" />
