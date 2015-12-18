@@ -16,6 +16,26 @@ namespace Tests
         private static readonly IUnicastMessageSender UnicastMessageSender = new UnicastMessageSender(Mock.Object);
 
         [TestMethod]
+        public void SendKeepaliveMessage_Destination_ShouldMatch()
+        {
+            var networkDevice = CreateNetworkDevice();
+
+            UnicastMessageSender.SendKeepaliveMessage(networkDevice);
+
+            Mock.Verify(ms => ms.Send(It.IsAny<IOutboundMessage>(), It.Is<IPAddress>(ip => ip.Equals(networkDevice.IPAddress))));
+        }
+
+        [TestMethod]
+        public void SendKeepaliveMessage_SentMessage_ShouldBeOutboundKeepaliveMessage()
+        {
+            var networkDevice = CreateNetworkDevice();
+
+            UnicastMessageSender.SendKeepaliveMessage(networkDevice);
+
+            Mock.Verify(ms => ms.Send(It.IsAny<OutboundKeepaliveMessage>(), It.IsAny<IPAddress>()));
+        }
+
+        [TestMethod]
         public void SendOffMessage_Destination_ShouldMatch()
         {
             var networkDevice = CreateNetworkDevice();

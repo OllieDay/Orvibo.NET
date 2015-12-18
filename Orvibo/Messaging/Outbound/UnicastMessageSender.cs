@@ -28,6 +28,15 @@
         }
 
         /// <summary>
+        ///     Sends a keepalive message to the specified destination.
+        /// </summary>
+        /// <param name="destination">Device to send the message to.</param>
+        public void SendKeepaliveMessage(INetworkDevice destination)
+        {
+            _messageSender.Send(new OutboundKeepaliveMessage(destination.MacAddress), destination.IPAddress);
+        }
+
+        /// <summary>
         ///     Sends an off message to the specified destination.
         /// </summary>
         /// <param name="destination">Device to send the message to.</param>

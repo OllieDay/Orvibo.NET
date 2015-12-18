@@ -8,6 +8,12 @@ namespace Orvibo.Messaging.Outbound
     internal interface IUnicastMessageSender : IDisposable
     {
         /// <summary>
+        ///     Sends a keepalive message to the specified destination.
+        /// </summary>
+        /// <param name="destination">Device to send the message to.</param>
+        void SendKeepaliveMessage(INetworkDevice destination);
+
+        /// <summary>
         ///     Sends an off message to the specified destination.
         /// </summary>
         /// <param name="destination">Device to send the message to.</param>
