@@ -3,7 +3,7 @@
     /// <summary>
     ///     Received from a socket after sending an outbound subscribe message.
     /// </summary>
-    internal sealed class InboundSubscribeMessage : InboundMessage
+    internal sealed class InboundSubscribeMessage : InboundStateMessage
     {
         /// <summary>
         ///     Initializes a new instance of the InboundSubscribeMessage class.

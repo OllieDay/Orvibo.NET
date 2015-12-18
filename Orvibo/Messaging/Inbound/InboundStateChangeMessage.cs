@@ -3,7 +3,7 @@
     /// <summary>
     ///     Received from a socket when its state changes.
     /// </summary>
-    internal sealed class InboundStateChangeMessage : InboundMessage
+    internal sealed class InboundStateChangeMessage : InboundStateMessage
     {
         /// <summary>
         ///     Initializes a new instance of the InboundStateChangeMessage class.

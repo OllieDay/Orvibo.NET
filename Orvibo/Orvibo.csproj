@@ -51,6 +51,7 @@
     <Compile Include="Messaging\Inbound\InboundMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundRediscoveryMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundStateChangeMessage.cs" />
+    <Compile Include="Messaging\Inbound\InboundStateMessage.cs" />
     <Compile Include="Messaging\Inbound\InboundSubscribeMessage.cs" />
     <Compile Include="Messaging\Inbound\MessageReceivedEventArgs.cs" />
     <Compile Include="Messaging\Inbound\MessageReceiver.cs" />

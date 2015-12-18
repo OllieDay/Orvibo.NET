@@ -11,10 +11,5 @@ namespace Orvibo.Messaging.Inbound
         ///     Gets the socket MAC address.
         /// </summary>
         PhysicalAddress MacAddress { get; }
-
-        /// <summary>
-        ///     Gets the socket state.
-        /// </summary>
-        SocketState State { get; }
     }
 }

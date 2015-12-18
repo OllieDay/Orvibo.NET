@@ -4,6 +4,7 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using Orvibo.Messaging.Inbound;
 using Orvibo.Messaging.Outbound;
+using Timer = System.Timers.Timer;
 
 namespace Orvibo
 {
@@ -12,6 +13,11 @@ namespace Orvibo
     /// </summary>
     internal sealed class Socket : ISocket, INetworkDevice
     {
+        /// <summary>
+        ///     Sends a keepalive message to the socket every 30 seconds while subscribed.
+        /// </summary>
+        private readonly Timer _keepaliveTimer = new Timer(TimeSpan.FromSeconds(30).TotalMilliseconds);
+
         /// <summary>
         ///     Used for sending messages.
         /// </summary>
@@ -38,6 +44,11 @@ namespace Orvibo
             MacAddress = macAddress;
             IPAddress = ipAddress;
             _messageSender = messageSender;
+
+            _keepaliveTimer.Elapsed += (sender, e) => _messageSender.SendKeepaliveMessage(this);
+
+            Subscribed += (sender, e) => _keepaliveTimer.Start();
+            Unsubscribed += (sender, e) => _keepaliveTimer.Stop();
         }
 
         /// <summary>
@@ -131,6 +142,7 @@ namespace Orvibo
         public void Dispose()
         {
             _messageSender.Dispose();
+            _keepaliveTimer.Dispose();
         }
 
         /// <summary>
@@ -155,14 +167,17 @@ namespace Orvibo
         /// <param name="message">Message to process.</param>
         public void Process(IInboundMessage message)
         {
-            var subscribeMessage = message as InboundSubscribeMessage;
+            var stateMessage = message as InboundStateMessage;
 
-            if (subscribeMessage != null)
+            if (stateMessage != null)
             {
-                IsSubscribed = true;
-            }
+                State = stateMessage.State;
 
-            State = message.State;
+                if (message is InboundSubscribeMessage)
+                {
+                    IsSubscribed = true;
+                }
+            }
         }
 
         /// <summary>

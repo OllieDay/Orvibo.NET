@@ -26,21 +26,15 @@ namespace Orvibo.Messaging.Inbound
         private static readonly byte[] DeviceIdentifier = { 0xAC, 0xCF };
 
         /// <summary>
-        ///     Message data.
-        /// </summary>
-        private readonly byte[] _data;
-
-        /// <summary>
         ///     Initializes a new instance of the InboundMessage class.
         /// </summary>
         /// <param name="data">Message data.</param>
         protected InboundMessage(byte[] data)
         {
-            _data = data;
+            Data = data;
 
             Validate();
             ParseMacAddress();
-            ParseState();
         }
 
         /// <summary>
@@ -49,9 +43,9 @@ namespace Orvibo.Messaging.Inbound
         public PhysicalAddress MacAddress { get; private set; }
 
         /// <summary>
-        ///     Gets the socket state.
+        ///     Gets the message data.
         /// </summary>
-        public SocketState State { get; private set; }
+        protected byte[] Data { get; }
 
         /// <summary>
         ///     Gets the message length.
@@ -65,8 +59,8 @@ namespace Orvibo.Messaging.Inbound
         {
             try
             {
-                var index = _data.IndexOfSequence(DeviceIdentifier).First();
-                var bytes = _data.Skip(index).Take(MacAddressLength).ToArray();
+                var index = Data.IndexOfSequence(DeviceIdentifier).First();
+                var bytes = Data.Skip(index).Take(MacAddressLength).ToArray();
 
                 if (bytes.Length != MacAddressLength)
                 {
@@ -82,33 +76,13 @@ namespace Orvibo.Messaging.Inbound
         }
 
         /// <summary>
-        ///     Parses the message data for the socket state.
-        /// </summary>
-        private void ParseState()
-        {
-            var state = _data.Last();
-
-            switch (state)
-            {
-                case 0x00:
-                    State = SocketState.Off;
-                    break;
-                case 0x01:
-                    State = SocketState.On;
-                    break;
-                default:
-                    throw new MessageException($"Error parsing message: 0x{state:X2} is not a valid state.");
-            }
-        }
-
-        /// <summary>
         ///     Validates the message data, ensuring its length is at least the minimum message length.
         /// </summary>
         private void Validate()
         {
-            if (_data.Length < MinMessageLength)
+            if (Data.Length < MinMessageLength)
             {
-                throw new MessageException($"Error parsing message: expected length {MinMessageLength}+, actual length {_data.Length}.");
+                throw new MessageException($"Error parsing message: expected length {MinMessageLength}+, actual length {Data.Length}.");
             }
         }
     }

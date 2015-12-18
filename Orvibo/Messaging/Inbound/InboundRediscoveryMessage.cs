@@ -3,7 +3,7 @@
     /// <summary>
     ///     Received from a socket after broadcasting an outbound rediscovery message.
     /// </summary>
-    internal sealed class InboundRediscoveryMessage : InboundMessage
+    internal sealed class InboundRediscoveryMessage : InboundStateMessage
     {
         /// <summary>
         ///     Initializes a new instance of the InboundRediscoveryMessage class.

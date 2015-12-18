@@ -3,7 +3,7 @@
     /// <summary>
     ///     Received from a socket after broadcasting an outbound discovery message.
     /// </summary>
-    internal sealed class InboundDiscoveryMessage : InboundMessage
+    internal sealed class InboundDiscoveryMessage : InboundStateMessage
     {
         /// <summary>
         ///     Initializes a new instance of the InboundDiscoveryMessage class.
