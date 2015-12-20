@@ -18,7 +18,7 @@ namespace Tests
 
         [TestMethod]
         [ExpectedException(typeof (MessageException))]
-        public void CreateNewInboundMessage_IncompleteSourceMacAddress_ShouldThrowMessageException()
+        public void CreateNewInboundMessage_IncompleteMacAddress_ShouldThrowMessageException()
         {
             var data = Enumerable.Repeat((byte) 0, 42).ToArray();
             data[40] = 0xAC;
@@ -29,7 +29,7 @@ namespace Tests
 
         [TestMethod]
         [ExpectedException(typeof (MessageException))]
-        public void CreateNewInboundMessage_InvalidSourceMacAddress_ShouldThrowMessageException()
+        public void CreateNewInboundMessage_InvalidMacAddress_ShouldThrowMessageException()
         {
             var data = Enumerable.Repeat((byte) 0, 42).ToArray();
 
@@ -39,10 +39,7 @@ namespace Tests
         [TestMethod]
         public void CreateNewInboundMessage_StateIsOff_StateShouldBeOff()
         {
-            var data = Enumerable.Repeat((byte) 0, 42).ToArray();
-
-            data[7] = 0xAC;
-            data[8] = 0xCF;
+            var data = CreateMessageData();
             data[41] = 0x00;
 
             var message = new InboundDiscoveryMessage(data);
@@ -56,10 +53,7 @@ namespace Tests
         [TestMethod]
         public void CreateNewInboundMessage_StateIsOn_StateShouldBeOn()
         {
-            var data = Enumerable.Repeat((byte) 0, 42).ToArray();
-
-            data[7] = 0xAC;
-            data[8] = 0xCF;
+            var data = CreateMessageData();
             data[41] = 0x01;
 
             var message = new InboundDiscoveryMessage(data);
@@ -74,13 +68,20 @@ namespace Tests
         [ExpectedException(typeof (MessageException))]
         public void CreateNewInboundMessage_StateIsUnknown_ShouldThrowMessageException()
         {
+            var data = CreateMessageData();
+            data[41] = 0xFF;
+
+            new InboundDiscoveryMessage(data);
+        }
+
+        private byte[] CreateMessageData()
+        {
             var data = Enumerable.Repeat((byte) 0, 42).ToArray();
 
             data[7] = 0xAC;
             data[8] = 0xCF;
-            data[41] = 0xFF;
 
-            new InboundDiscoveryMessage(data);
+            return data;
         }
     }
 }

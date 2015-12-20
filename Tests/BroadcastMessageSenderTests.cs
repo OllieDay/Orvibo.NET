@@ -12,49 +12,45 @@ namespace Tests
         [TestMethod]
         public void SendDiscoveryMessage_DestinationIPAddress_ShouldBeBroadcastAddress()
         {
-            var mock = new Mock<IMessageSender>();
-            var messageSender = mock.Object;
+            var messageSender = Mock.Of<IMessageSender>();
             var broadcastMessageSender = new BroadcastMessageSender(messageSender);
 
             broadcastMessageSender.SendDiscoveryMessage();
 
-            mock.Verify(ms => ms.Send(It.IsAny<OutboundDiscoveryMessage>(), It.Is<IPAddress>(ip => ip.Equals(IPAddress.Broadcast))));
+            Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<OutboundDiscoveryMessage>(), It.Is<IPAddress>(ip => ip.Equals(IPAddress.Broadcast))));
         }
 
         [TestMethod]
         public void SendDiscoveryMessage_SentMessage_ShouldBeOutboundDiscoveryMessage()
         {
-            var mock = new Mock<IMessageSender>();
-            var messageSender = mock.Object;
+            var messageSender = Mock.Of<IMessageSender>();
             var broadcastMessageSender = new BroadcastMessageSender(messageSender);
 
             broadcastMessageSender.SendDiscoveryMessage();
 
-            mock.Verify(ms => ms.Send(It.IsAny<OutboundDiscoveryMessage>(), It.IsAny<IPAddress>()));
+            Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<OutboundDiscoveryMessage>(), It.IsAny<IPAddress>()));
         }
 
         [TestMethod]
         public void SendRediscoveryMessage_DestinationIPAddress_ShouldBeBroadcastAddress()
         {
-            var mock = new Mock<IMessageSender>();
-            var messageSender = mock.Object;
+            var messageSender = Mock.Of<IMessageSender>();
             var broadcastMessageSender = new BroadcastMessageSender(messageSender);
 
             broadcastMessageSender.SendRediscoveryMessage(PhysicalAddress.None);
 
-            mock.Verify(ms => ms.Send(It.IsAny<OutboundRediscoveryMessage>(), It.Is<IPAddress>(ip => ip.Equals(IPAddress.Broadcast))));
+            Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<OutboundRediscoveryMessage>(), It.Is<IPAddress>(ip => ip.Equals(IPAddress.Broadcast))));
         }
 
         [TestMethod]
         public void SendRediscoveryMessage_SentMessage_ShouldBeOutboundRediscoveryMessage()
         {
-            var mock = new Mock<IMessageSender>();
-            var messageSender = mock.Object;
+            var messageSender = Mock.Of<IMessageSender>();
             var broadcastMessageSender = new BroadcastMessageSender(messageSender);
 
             broadcastMessageSender.SendRediscoveryMessage(PhysicalAddress.None);
 
-            mock.Verify(ms => ms.Send(It.IsAny<OutboundRediscoveryMessage>(), It.IsAny<IPAddress>()));
+            Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<OutboundRediscoveryMessage>(), It.IsAny<IPAddress>()));
         }
     }
 }
