@@ -7,7 +7,7 @@ namespace Tests
     public sealed class OutboundDiscoveryMessageTests
     {
         [TestMethod]
-        public void GetPayload_ShouldBeValid()
+        public void GetPayload_Data_ShouldBeValid()
         {
             var message = new OutboundDiscoveryMessage();
 

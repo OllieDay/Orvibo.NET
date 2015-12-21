@@ -8,7 +8,7 @@ namespace Tests
     public sealed class OutboundSubscribeMessageTests
     {
         [TestMethod]
-        public void GetPayload_ShouldBeValid()
+        public void GetPayload_Data_ShouldBeValid()
         {
             var macAddress = new PhysicalAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
             var message = new OutboundSubscribeMessage(macAddress);
@@ -46,6 +46,7 @@ namespace Tests
                 0x20,
                 0x20
             };
+
             var actual = message.GetPayload();
 
             CollectionAssert.AreEqual(expected, actual);

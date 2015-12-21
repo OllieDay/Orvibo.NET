@@ -8,10 +8,9 @@ namespace Tests
     public sealed class OutboundMessageTests
     {
         [TestMethod]
-        public void GetPayload_ShouldBeValid()
+        public void GetPayload_Data_ShouldBeValid()
         {
-            var mock = new Mock<OutboundMessage>();
-            var message = mock.Object;
+            var message = Mock.Of<OutboundMessage>();
 
             var expected = new byte[] { 0x68, 0x64, 0x00, 0x04 };
             var actual = message.GetPayload();

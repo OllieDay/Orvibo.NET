@@ -8,7 +8,7 @@ namespace Tests
     public sealed class OutboundKeepaliveMessageTests
     {
         [TestMethod]
-        public void GetPayload_ShouldBeValid()
+        public void GetPayload_Data_ShouldBeValid()
         {
             var macAddress = new PhysicalAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
             var message = new OutboundKeepaliveMessage(macAddress);
