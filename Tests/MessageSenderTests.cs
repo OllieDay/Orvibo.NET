@@ -15,7 +15,7 @@ namespace Tests
         [TestMethod]
         public void Send_ReceivedData_ShouldMatch()
         {
-            var message = CreateMessage(new byte[] { 1, 2, 3 });
+            var message = Mock.Of<IOutboundMessage>(m => m.GetPayload() == new byte[] { 1, 2, 3 });
 
             using (var client = new UdpClient(Port))
             {
@@ -33,32 +33,6 @@ namespace Tests
 
                 CollectionAssert.AreEqual(expected, actual);
             }
-        }
-
-        [TestMethod]
-        public void Send_ShouldSendMessage()
-        {
-            var message = CreateMessage(new byte[] { });
-
-            using (var client = new UdpClient(Port))
-            {
-                var result = client.ReceiveAsync();
-
-                using (var messageSender = new MessageSender())
-                {
-                    messageSender.Send(message, IPAddress.Loopback);
-                }
-
-                result.Wait(TimeSpan.FromSeconds(1));
-            }
-        }
-
-        private static IOutboundMessage CreateMessage(byte[] data)
-        {
-            var mock = new Mock<IOutboundMessage>();
-            mock.Setup(m => m.GetPayload()).Returns(data);
-
-            return mock.Object;
         }
     }
 }

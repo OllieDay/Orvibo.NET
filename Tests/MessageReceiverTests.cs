@@ -15,21 +15,18 @@ namespace Tests
         [TestMethod]
         public void CreateNewMessageReceiver_Blacklist_ShouldBeEmpty()
         {
-            using (var messageReceiver = new MessageReceiver(Mock.Of<IMessageParser>()))
+            using (var messageReceiver = CreateMessageReceiver())
             {
-                Assert.AreEqual(messageReceiver.Blacklist.Count, 0);
+                Assert.AreEqual(0, messageReceiver.Blacklist.Count);
             }
         }
 
         [TestMethod]
         public void CreateNewMessageReceiver_Blacklist_ShouldBeValid()
         {
-            var blacklist = new List<IPAddress>
-            {
-                IPAddress.None
-            };
+            var blacklist = new List<IPAddress>();
 
-            using (var messageReceiver = new MessageReceiver(Mock.Of<IMessageParser>(), blacklist))
+            using (var messageReceiver = CreateMessageReceiver(blacklist))
             {
                 Assert.AreEqual(messageReceiver.Blacklist, blacklist);
             }
@@ -38,7 +35,7 @@ namespace Tests
         [TestMethod]
         public void CreateNewMessageReceiver_IsRunning_ShouldBeFalse()
         {
-            using (var messageReceiver = new MessageReceiver(Mock.Of<IMessageParser>()))
+            using (var messageReceiver = CreateMessageReceiver())
             {
                 Assert.IsFalse(messageReceiver.IsRunning);
             }
@@ -47,10 +44,7 @@ namespace Tests
         [TestMethod]
         public void MessageReceived_MessageReceived_ShouldBeInvoked()
         {
-            var message = Mock.Of<IInboundMessage>();
-            var messageParser = Mock.Of<IMessageParser>(mp => mp.Parse(It.IsAny<byte[]>()) == message);
-
-            using (var messageReceiver = new MessageReceiver(messageParser))
+            using (var messageReceiver = CreateMessageReceiver())
             {
                 var invoked = false;
 
@@ -70,15 +64,12 @@ namespace Tests
         [TestMethod]
         public void MessageReceivedFromBlacklistedIPAddress_MessageReceived_ShouldNotBeInvoked()
         {
-            var message = Mock.Of<IInboundMessage>();
-            var messageParser = Mock.Of<IMessageParser>(mp => mp.Parse(It.IsAny<byte[]>()) == message);
-
             var blacklist = new List<IPAddress>
             {
                 IPAddress.Loopback
             };
 
-            using (var messageReceiver = new MessageReceiver(messageParser, blacklist))
+            using (var messageReceiver = CreateMessageReceiver(blacklist))
             {
                 var invoked = false;
 
@@ -99,7 +90,7 @@ namespace Tests
         [ExpectedException(typeof (InvalidOperationException))]
         public void Start_AlreadyRunning_ShouldThrowInvalidOperationException()
         {
-            using (var messageReceiver = new MessageReceiver(Mock.Of<IMessageParser>()))
+            using (var messageReceiver = CreateMessageReceiver())
             {
                 messageReceiver.Start();
                 messageReceiver.Start();
@@ -109,7 +100,7 @@ namespace Tests
         [TestMethod]
         public void Start_IsRunning_ShouldBeTrue()
         {
-            using (var messageReceiver = new MessageReceiver(Mock.Of<IMessageParser>()))
+            using (var messageReceiver = CreateMessageReceiver())
             {
                 messageReceiver.Start();
 
@@ -120,13 +111,31 @@ namespace Tests
         [TestMethod]
         public void Stop_IsRunning_ShouldBeFalse()
         {
-            using (var messageReceiver = new MessageReceiver(Mock.Of<IMessageParser>()))
+            using (var messageReceiver = CreateMessageReceiver())
             {
                 messageReceiver.Start();
                 messageReceiver.Stop();
 
                 Assert.IsFalse(messageReceiver.IsRunning);
             }
+        }
+
+        private IMessageParser CreateMessageParser()
+        {
+            var message = Mock.Of<IInboundMessage>();
+            var messageParser = Mock.Of<IMessageParser>(mp => mp.Parse(It.IsAny<byte[]>()) == message);
+
+            return messageParser;
+        }
+
+        private IMessageReceiver CreateMessageReceiver(List<IPAddress> blacklist)
+        {
+            return new MessageReceiver(CreateMessageParser(), blacklist);
+        }
+
+        private IMessageReceiver CreateMessageReceiver()
+        {
+            return new MessageReceiver(CreateMessageParser(), new List<IPAddress>());
         }
     }
 }

@@ -11,111 +11,167 @@ namespace Tests
     [TestClass]
     public sealed class UnicastMessageSenderTests
     {
-        private static readonly Mock<IMessageSender> Mock = new Mock<IMessageSender>();
-
-        private static readonly IUnicastMessageSender UnicastMessageSender = new UnicastMessageSender(Mock.Object);
-
         [TestMethod]
         public void SendKeepaliveMessage_Destination_ShouldMatch()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendKeepaliveMessage(networkDevice);
+                    unicastMessageSender.SendKeepaliveMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.IsAny<IOutboundMessage>(), It.Is<IPAddress>(ip => ip.Equals(networkDevice.IPAddress))));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<IOutboundMessage>(), It.Is<IPAddress>(ip => ip.Equals(networkDevice.IPAddress))));
+                }
+            }
         }
 
         [TestMethod]
         public void SendKeepaliveMessage_SentMessage_ShouldBeOutboundKeepaliveMessage()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendKeepaliveMessage(networkDevice);
+                    unicastMessageSender.SendKeepaliveMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.IsAny<OutboundKeepaliveMessage>(), It.IsAny<IPAddress>()));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<OutboundKeepaliveMessage>(), It.IsAny<IPAddress>()));
+                }
+            }
         }
 
         [TestMethod]
         public void SendOffMessage_Destination_ShouldMatch()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendOffMessage(networkDevice);
+                    unicastMessageSender.SendOffMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.IsAny<IOutboundMessage>(), It.Is<IPAddress>(ip => ip.Equals(networkDevice.IPAddress))));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<IOutboundMessage>(), It.Is<IPAddress>(ip => ip.Equals(networkDevice.IPAddress))));
+                }
+            }
         }
 
         [TestMethod]
         public void SendOffMessage_SentMessage_ShouldBeOutboundStateChangeMessage()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendOffMessage(networkDevice);
+                    unicastMessageSender.SendOffMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.IsAny<OutboundStateChangeMessage>(), It.IsAny<IPAddress>()));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<OutboundStateChangeMessage>(), It.IsAny<IPAddress>()));
+                }
+            }
         }
 
         [TestMethod]
         public void SendOffMessage_SentMessage_StateShouldBeOff()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendOffMessage(networkDevice);
+                    unicastMessageSender.SendOffMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.Is<OutboundStateChangeMessage>(m => m.GetPayload().Last() == 0), It.IsAny<IPAddress>()));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.Is<IOutboundMessage>(m => m.GetPayload().Last() == 0), It.IsAny<IPAddress>()));
+                }
+            }
         }
 
         [TestMethod]
         public void SendOnMessage_Destination_ShouldMatch()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendOnMessage(networkDevice);
+                    unicastMessageSender.SendOnMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.IsAny<IOutboundMessage>(), It.Is<IPAddress>(ip => ip.Equals(networkDevice.IPAddress))));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<IOutboundMessage>(), It.Is<IPAddress>(ip => ip.Equals(networkDevice.IPAddress))));
+                }
+            }
         }
 
         [TestMethod]
         public void SendOnMessage_SentMessage_ShouldBeOutboundStateChangeMessage()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendOnMessage(networkDevice);
+                    unicastMessageSender.SendOnMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.IsAny<OutboundStateChangeMessage>(), It.IsAny<IPAddress>()));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<OutboundStateChangeMessage>(), It.IsAny<IPAddress>()));
+                }
+            }
         }
 
         [TestMethod]
         public void SendOnMessage_SentMessage_StateShouldBeOn()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendOnMessage(networkDevice);
+                    unicastMessageSender.SendOnMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.Is<OutboundStateChangeMessage>(m => m.GetPayload().Last() == 1), It.IsAny<IPAddress>()));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.Is<IOutboundMessage>(m => m.GetPayload().Last() == 1), It.IsAny<IPAddress>()));
+                }
+            }
         }
 
         [TestMethod]
         public void SendSubscribeMessage_Destination_ShouldMatch()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendSubscribeMessage(networkDevice);
+                    unicastMessageSender.SendSubscribeMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.IsAny<IOutboundMessage>(), It.Is<IPAddress>(ip => ip.Equals(networkDevice.IPAddress))));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<IOutboundMessage>(), It.Is<IPAddress>(ip => ip.Equals(networkDevice.IPAddress))));
+                }
+            }
         }
 
         [TestMethod]
         public void SendSubscribeMessage_SentMessage_ShouldBeOutboundSubscribeMessage()
         {
-            var networkDevice = CreateNetworkDevice();
+            using (var messageSender = Mock.Of<IMessageSender>())
+            {
+                using (var unicastMessageSender = new UnicastMessageSender(messageSender))
+                {
+                    var networkDevice = CreateNetworkDevice();
 
-            UnicastMessageSender.SendSubscribeMessage(networkDevice);
+                    unicastMessageSender.SendSubscribeMessage(networkDevice);
 
-            Mock.Verify(ms => ms.Send(It.IsAny<OutboundSubscribeMessage>(), It.IsAny<IPAddress>()));
+                    Mock.Get(messageSender).Verify(ms => ms.Send(It.IsAny<OutboundSubscribeMessage>(), It.IsAny<IPAddress>()));
+                }
+            }
         }
 
-        private static INetworkDevice CreateNetworkDevice()
+        private INetworkDevice CreateNetworkDevice()
         {
             var networkDeviceMock = new Mock<INetworkDevice>();
             networkDeviceMock.Setup(nd => nd.MacAddress).Returns(PhysicalAddress.None);
