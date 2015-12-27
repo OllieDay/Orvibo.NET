@@ -113,7 +113,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void ProcessSubscribeMessageAlreadySubscribed_Subscribed_ShouldNotBeRaised()
+        public void ProcessSubscribeMessageWhileAlreadySubscribed_Subscribed_ShouldNotBeRaised()
         {
             var socket = CreateSocket();
             var message = CreateInboundSubscribeMessage(SocketState.Off);
