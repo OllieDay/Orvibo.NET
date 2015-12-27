@@ -15,7 +15,7 @@ namespace Tests
         [TestMethod]
         public void CreateNewSocket_IPAddress_ShouldBeValid()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+            var socket = CreateSocket();
 
             Assert.AreEqual(socket.IPAddress, IPAddress.None);
         }
@@ -23,7 +23,7 @@ namespace Tests
         [TestMethod]
         public void CreateNewSocket_IsSubscribed_ShouldBeFalse()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+            var socket = CreateSocket();
 
             Assert.IsFalse(socket.IsSubscribed);
         }
@@ -31,7 +31,7 @@ namespace Tests
         [TestMethod]
         public void CreateNewSocket_MacAddress_ShouldBeValid()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+            var socket = CreateSocket();
 
             Assert.AreEqual(socket.MacAddress, PhysicalAddress.None);
         }
@@ -39,7 +39,7 @@ namespace Tests
         [TestMethod]
         public void CreateNewSocket_State_ShouldBeUnknown()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+            var socket = CreateSocket();
 
             Assert.AreEqual(socket.State, SocketState.Unknown);
         }
@@ -48,7 +48,7 @@ namespace Tests
         [ExpectedException(typeof (InvalidOperationException))]
         public void Off_IsSubscribedIsFalse_ShouldThrowInvalidOperationException()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+            var socket = CreateSocket();
 
             socket.Off();
         }
@@ -57,9 +57,8 @@ namespace Tests
         public void Off_StateIsNotOff_ShouldSendOffMessage()
         {
             var unicastMessageSender = Mock.Of<IUnicastMessageSender>();
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, unicastMessageSender);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket(unicastMessageSender);
+            var message = CreateInboundSubscribeMessage(SocketState.On);
 
             socket.Process(message);
             socket.Off();
@@ -71,9 +70,8 @@ namespace Tests
         [ExpectedException(typeof (InvalidOperationException))]
         public void Off_StateIsOff_ShouldThrowInvalidOperationException()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket();
+            var message = CreateInboundSubscribeMessage(SocketState.Off);
 
             socket.Process(message);
 
@@ -84,7 +82,7 @@ namespace Tests
         [ExpectedException(typeof (InvalidOperationException))]
         public void On_IsSubscribedIsFalse_ShouldThrowInvalidOperationException()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+            var socket = CreateSocket();
 
             socket.Off();
         }
@@ -93,9 +91,8 @@ namespace Tests
         public void On_StateIsNotOn_ShouldSendOnMessage()
         {
             var unicastMessageSender = Mock.Of<IUnicastMessageSender>();
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, unicastMessageSender);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket(unicastMessageSender);
+            var message = CreateInboundSubscribeMessage(SocketState.Off);
 
             socket.Process(message);
             socket.On();
@@ -107,9 +104,8 @@ namespace Tests
         [ExpectedException(typeof (InvalidOperationException))]
         public void On_StateIsOn_ShouldThrowInvalidOperationException()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket();
+            var message = CreateInboundSubscribeMessage(SocketState.On);
 
             socket.Process(message);
 
@@ -119,9 +115,8 @@ namespace Tests
         [TestMethod]
         public void ProcessSubscribeMessageAlreadySubscribed_Subscribed_ShouldNotBeRaised()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket();
+            var message = CreateInboundSubscribeMessage(SocketState.Off);
 
             socket.Process(message);
 
@@ -136,9 +131,8 @@ namespace Tests
         [TestMethod]
         public void StateChanged_State_ShouldChange()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket();
+            var message = CreateInboundSubscribeMessage(SocketState.Off);
 
             socket.Process(message);
 
@@ -148,9 +142,8 @@ namespace Tests
         [TestMethod]
         public void StateChanged_StateChanged_ShouldBeRaised()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
-            var subscribeMessage =
-                new InboundSubscribeMessage(new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            var socket = CreateSocket();
+            var subscribeMessage = CreateInboundSubscribeMessage(SocketState.Off);
             var onMessage =
                 new InboundStateChangeMessage(
                     new byte[] { 0x68, 0x64, 0x00, 0x17, 0x73, 0x66, 0xAC, 0xCF, 0, 0, 0, 0, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0, 0, 0, 0, 0x01 });
@@ -169,7 +162,7 @@ namespace Tests
         public void Subscribe_IsSubscribedIsFalse_ShouldSendSubscribeMessage()
         {
             var unicastMessageSender = Mock.Of<IUnicastMessageSender>();
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, unicastMessageSender);
+            var socket = CreateSocket(unicastMessageSender);
 
             socket.Subscribe();
 
@@ -180,9 +173,8 @@ namespace Tests
         [ExpectedException(typeof (InvalidOperationException))]
         public void Subscribe_IsSubscribeIsTrue_ShouldThrowInvalidOperationException()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket();
+            var message = CreateInboundSubscribeMessage(SocketState.Off);
 
             socket.Process(message);
 
@@ -192,9 +184,8 @@ namespace Tests
         [TestMethod]
         public void Subscribe_Subscribed_ShouldBeRaised()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket();
+            var message = CreateInboundSubscribeMessage(SocketState.Off);
             var invoked = false;
 
             socket.Subscribed += (sender, e) => invoked = true;
@@ -207,7 +198,7 @@ namespace Tests
         public void Subscribe_Subscribing_ShouldBeRaised()
         {
             var unicastMessageSender = Mock.Of<IUnicastMessageSender>();
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, unicastMessageSender);
+            var socket = CreateSocket();
             var invoked = false;
 
             socket.Subscribing += (sender, e) => invoked = true;
@@ -219,9 +210,8 @@ namespace Tests
         [TestMethod]
         public void Unsubscribe_IsSubscribed_ShouldBeFalse()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket();
+            var message = CreateInboundSubscribeMessage(SocketState.Off);
 
             socket.Process(message);
             socket.Unsubscribe();
@@ -233,7 +223,7 @@ namespace Tests
         [ExpectedException(typeof (InvalidOperationException))]
         public void Unsubscribe_IsSubscribeIsFalse_ShouldThrowInvalidOperationException()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
+            var socket = CreateSocket();
 
             socket.Unsubscribe();
         }
@@ -241,9 +231,8 @@ namespace Tests
         [TestMethod]
         public void Unsubscribe_Unsubscribed_ShouldBeRaised()
         {
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, null);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            var message = new InboundSubscribeMessage(data);
+            var socket = CreateSocket();
+            var message = CreateInboundSubscribeMessage(SocketState.Off);
 
             socket.Process(message);
 
@@ -260,8 +249,7 @@ namespace Tests
         {
             var unicastMessageSender = Mock.Of<IUnicastMessageSender>();
             var socket = new Socket(PhysicalAddress.None, IPAddress.None, unicastMessageSender);
-            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
-            var message = new InboundSubscribeMessage(data);
+            var message = CreateInboundSubscribeMessage(SocketState.On);
 
             socket.Process(message);
 
@@ -271,6 +259,19 @@ namespace Tests
             socket.Unsubscribe();
 
             Assert.IsTrue(invoked);
+        }
+
+        private InboundSubscribeMessage CreateInboundSubscribeMessage(SocketState state)
+        {
+            var stateByte = (byte) (state == SocketState.Off ? 0x00 : state == SocketState.On ? 0x01 : 0xFF);
+            var data = new byte[] { 0x68, 0x64, 0x00, 0x18, 0x63, 0x6C, 0xAC, 0xCF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, stateByte };
+
+            return new InboundSubscribeMessage(data);
+        }
+
+        private Socket CreateSocket(IUnicastMessageSender unicastMessageSender = null)
+        {
+            return new Socket(PhysicalAddress.None, IPAddress.None, unicastMessageSender);
         }
     }
 }
