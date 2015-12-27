@@ -197,8 +197,7 @@ namespace Tests
         [TestMethod]
         public void Subscribe_Subscribing_ShouldBeRaised()
         {
-            var unicastMessageSender = Mock.Of<IUnicastMessageSender>();
-            var socket = CreateSocket();
+            var socket = CreateSocket(Mock.Of<IUnicastMessageSender>());
             var invoked = false;
 
             socket.Subscribing += (sender, e) => invoked = true;
@@ -247,8 +246,7 @@ namespace Tests
         [TestMethod]
         public void Unsubscribe_Unsubscribing_ShouldBeRaised()
         {
-            var unicastMessageSender = Mock.Of<IUnicastMessageSender>();
-            var socket = new Socket(PhysicalAddress.None, IPAddress.None, unicastMessageSender);
+            var socket = new Socket(PhysicalAddress.None, IPAddress.None, Mock.Of<IUnicastMessageSender>());
             var message = CreateInboundSubscribeMessage(SocketState.On);
 
             socket.Process(message);
